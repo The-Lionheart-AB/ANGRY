@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>😡</title>
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#680000,#e30000);
+font-family:'Comic Sans MS',cursive;
+overflow:hidden;
+}
+.container{
+background:white;
+padding:40px;
+width:500px;
+border-radius:30px;
+box-shadow:0 10px 30px rgba(255,140,180,.4);
+text-align:center;
+}
+h1{
+color:#ff5c9c;
+min-height:90px;
+}
+.buttons{
+position:relative;
+height:180px;
+}
+button{
+border:none;
+border-radius:999px;
+padding:15px 40px;
+font-size:20px;
+cursor:pointer;
+position:absolute;
+}
+#yesBtn{
+left:90px;
+top:60px;
+background:#ff80bf;
+color:white;
+}
+#noBtn{
+left:300px;
+top:60px;
+background:#b388ff;
+color:white;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 id="question"></h1>
+<div class="buttons" id="buttonArea">
+<button id="yesBtn">YES</button>
+<button id="noBtn">NO</button>
+</div>
+</div>
+
+<script>
+const questions=[
+{text:"Are you dumb? 😡",runaway:"yes"},
+{text:"Are you undeserving of good things? 😡",runaway:"yes"},
+{text:"Are you the most capable girl in the world? 😡",runaway:"no"},
+{text:"Are you the most hardworking girl in the world? 😡",runaway:"no"},
+{text:"Do you deserve the best things in life? 😡",runaway:"no"},
+{text:"Will you ever give up and stop fighting? 😡",runaway:"yes"},
+{text:"Will you ever lose faith in yourself? 😡",runaway:"yes"},
+{text:"WILL YOU FUCKING FIGHT AND WIN DARLING? 😡",runaway:"no"},
+{text:"Will you ever give up and stop fighting? 😡",runaway:"yes"},
+{text:"Will you ever lose faith in yourself? 😡",runaway:"no"},
+{text:"GOOD GIRL. 😡",runaway:"no"},
+];
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const area=document.getElementById("buttonArea");
+const question=document.getElementById("question");
+
+let current=0;
+let runner;
+
+function setQuestion(){
+question.innerText=questions[current].text;
+runner=questions[current].runaway==="yes"?yesBtn:
+questions[current].runaway==="no"?noBtn:null;
+}
+
+function nextQuestion(){
+current=(current+1)%questions.length;
+yesBtn.style.left="90px";
+yesBtn.style.top="60px";
+noBtn.style.left="300px";
+noBtn.style.top="60px";
+setQuestion();
+}
+
+function moveButton(){
+if(!runner) return;
+const x=Math.random()*(area.clientWidth-runner.offsetWidth);
+const y=Math.random()*(area.clientHeight-runner.offsetHeight);
+runner.style.left=x+"px";
+runner.style.top=y+"px";
+}
+
+document.addEventListener("mousemove",(e)=>{
+if(!runner) return;
+const rect=runner.getBoundingClientRect();
+const cx=rect.left+rect.width/2;
+const cy=rect.top+rect.height/2;
+if(Math.hypot(e.clientX-cx,e.clientY-cy)<150){
+moveButton();
+}
+});
+
+yesBtn.onclick=()=>runner===yesBtn?moveButton():nextQuestion();
+noBtn.onclick=()=>runner===noBtn?moveButton():nextQuestion();
+
+setQuestion();
+</script>
+</body>
+</html>
